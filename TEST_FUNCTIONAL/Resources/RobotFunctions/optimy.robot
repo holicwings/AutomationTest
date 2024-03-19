@@ -1,5 +1,5 @@
 *** Settings ***
-Documentation   COMMON KEYWORDS USED FOR Optimy
+Documentation   Common Keywords Used For Optimy
 ...             File Version 1.0
 Library         Collections
 Library         RPA.Browser.Selenium
@@ -8,52 +8,70 @@ Resource        ../RobotLocators/optimy.object.robot
 
 *** Keywords ***
 Allow Necessary Cookies Only
-    Wait Until Element Is Visible    css:button#cookie-allow-necessary-button    10
-    Click Element    css:button#cookie-allow-necessary-button
-    Wait Until Element Is Not Visible    css:button#cookie-allow-necessary-button    10
+    Wait Until Element Is Visible        ${allowNecessaryCookiesOnlyButton}    10
+    Click Element                        ${allowNecessaryCookiesOnlyButton}
+    Wait Until Element Is Not Visible    ${allowNecessaryCookiesOnlyButton}    10
 
 Login To App
     [Arguments]    ${userName}    ${password}
-    ${isLoginvisible}    Run Keyword And Return Status    Wait Until Element Is Visible    css:a.ml-auto    5
-    Run Keyword If    ${isLoginvisible} == True    Click Element    css:a.ml-auto
-    Wait Until Element Is Visible    css:#login-email    
-    Input Text    css:#login-email       ${userName}
-    Input Text    css:#login-password    ${password}
-    Wait Until Element Is Enabled    css:form#login-form button[type\="submit"]
-    Click Element    css:form#login-form button[type\="submit"]
-    Wait Until Element Is Visible    css:span[data-original-title\="My account"]
+    ${isLoginvisible}    Run Keyword And Return Status    Wait Until Element Is Visible    ${loginHeaderButton}    5
+    Run Keyword If    ${isLoginvisible} == True    Click Element    ${loginHeaderButton}
+    Wait Until Element Is Visible     ${emailField}    
+    Input Text    ${emailField}       ${userName}
+    Input Text    ${passwordField}    ${password}
+    Wait Until Element Is Enabled     ${loginButton}
+    Click Element                     ${loginButton}
+    Wait Until Element Is Visible     ${myAccountIcon}
 
 Submit New Application
-    Scroll Element Into View    css:a[href^\='/en/project/new/'].btn-outline-primary
-    Click Element When Clickable    css:a[href^\='/en/project/new/'].btn-outline-primary
-    Wait Until Element Is Visible    css:a.projectStepsLink
+    Scroll Element Into View        ${submitNewApplicationButton}
+    Click Element When Clickable    ${submitNewApplicationButton}
+    Wait Until Element Is Visible   ${projectSteps}
+
+Page Is Navigated Correctly
+    [Arguments]     ${pageTitle}
+    ${pageTitle}    Get Title
+    Should Contain  ${pageTitle}    ${pageTitle}
 
 Input Field Data
     [Arguments]    ${fieldName}    ${fieldValue}
     Wait Until Element Is Visible    css:input[aria-label\="${fieldName}"]
-    Input Text    css:input[aria-label\="${fieldName}"]    ${fieldValue}
+    Input Text                       css:input[aria-label\="${fieldName}"]    ${fieldValue}
 
 Input Address
     [Arguments]    ${fieldValue}
-    Wait Until Element Is Visible    css:div.field textarea
-    Input Text    css:div.field textarea    ${fieldValue}
+    Wait Until Element Is Visible        ${addressInputField}
+    Input Text   ${addressInputField}    ${fieldValue}
 
 Upload Photo
     [Arguments]    ${filePath}
-    Choose File    css:input[name\="Filedata"][type="file"]   ${EXECDIR}/${filePath}
+    Choose File    ${uploadPhotoInputField}   ${EXECDIR}/${filePath}
 
 Select Gender
     [Arguments]    ${gender}
     Wait Until ELement is visible    css:label.custom-control[aria-label\="${gender}"]
-    Click Element    css:label.custom-control[aria-label\="${gender}"]
+    Click Element                    css:label.custom-control[aria-label\="${gender}"]
 
 Select Postal Code
     [Arguments]    ${postalCode}
-    Input Field Data    Select postal code     ${postalCode}
-    Wait Until Element Is Visible    css:ul.ui-menu a
-    Click Element    css:ul.ui-menu a
+    Input Field Data                 Select postal code          ${postalCode}
+    Wait Until Element Is Visible    ${postalCodeSelectionList}
+    Click Element                    ${postalCodeSelectionList}
+
+Tick Tools Checkbox
+    [Arguments]    ${toolName}
+    Scroll Element Into View   css:label[aria-label\="${toolName}"]
+    Click Element              css:label[aria-label\="${toolName}"]
+    Sleep    0.5sec
+
+Input Career Objective
+    [Arguments]    ${objective}
+    Wait Until Element Is Visible    ${careerObjectiveIFrame}
+    Select Frame    ${careerObjectiveIFrame}
+    Input Text      ${careerObjectiveTextBox}    ${objective}
+    Unselect Frame
 
 Field Data Is Validated
-    [Arguments]    ${objectPath}    ${actualResult}
-    ${actualText}    Get Text   ${objectPath}
+    [Arguments]        ${objectPath}    ${actualResult}
+    ${actualText}      Get Text         ${objectPath}
     Should Be Equal    ${actualText}    ${actualResult}

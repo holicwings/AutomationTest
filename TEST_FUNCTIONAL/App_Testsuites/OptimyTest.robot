@@ -4,6 +4,7 @@ Documentation      Sample Test Script For Optimy Site
 Resource           ../Resources/RobotFunctions/commons.robot
 Resource           ../Resources/RobotFunctions/optimy.robot
 Resource           ../Resources/RobotLocators/optimy.object.robot
+Resource           ../Resources/RobotFunctions/optimy.robot
 Test Teardown      Close All Browsers
 
 *** Variables ***
@@ -39,43 +40,33 @@ User Login To Application
     Login To App    ${userName}    ${userPassword}
 
 User Submits A New Application
-    Click Element When Clickable   css:a.btn-primary
-    Wait Until Element is Visible    css:div.page-main__content-wrapper h1
-    ${h1Text}    Get Text    css:div.page-main__content-wrapper h1
-    ${isVisible}    Run Keyword And Return Status    Should Be Equal    ${h1Text}    Continue with the submission of an application?
+    Click Element When Clickable   ${submitANewApplicationButton}
+    Wait Until Element is Visible  ${continueWithSubmissionHeaderPath}
+    Page Is Navigated Correctly    ${continueWithSubmissionText}
+    ${h1Text}       Get Text       ${continueWithSubmissionHeaderPath}
+    ${isVisible}    Run Keyword And Return Status    Should Be Equal    ${h1Text}    ${continueWithSubmissionText}
     Run Keyword If    ${isVisible} == ${True}    Submit New Application
-    Input Field Data    First name    ${firstName}
-    Input Field Data    Last name     ${lastName}
-    Input Field Data    Extension     ${extension}
-    Input Address    ${address}
+    Page Is Navigated Correctly         Fill-out all forms
+    Input Field Data      First name    ${firstName}
+    Input Field Data      Last name     ${lastName}
+    Input Field Data      Extension     ${extension}
+    Input Address         ${address}
     Select Postal Code    ${postalCode}
-    Select From List By Label    css:select.locationCountry.custom-select    ${country}
-    Upload Photo    ${filePath}
-    Select Gender    ${gender}
-    Select From List By Label    css:select[aria-label\="Select a role you're applying for"]    ${role}
-    FOR    ${element}    IN    @{toolsList}
-        Scroll Element Into View    css:label[aria-label\="${element}"]
-        Click Element    css:label[aria-label\="${element}"]
+    Select From List By Label    ${countrySelectionList}    ${country}
+    Upload Photo          ${filePath}
+    Select Gender         ${gender}
+    Select From List By Label    ${roleSelectionList}       ${role}
+    FOR    ${tool}    IN    @{toolsList}
+        Tick Tools Checkbox      ${tool}
     END
-    Wait Until Element Is Visible    css:iframe[title^\='Editor']
-    Select Frame    css:iframe[title^\='Editor']
-    Input Text    css:body[role="textbox"]    ${objective}
-    Sleep    10sec
-    Unselect Frame  
-    Click Element When Visible    css:button#navButtonNext
-
-New Application Is Successfully Submitted
-    Scroll Element Into View    css:div.d-none button#submitButton
-    Click Element   css:div.d-none button#submitButton
-
-    Wait Until Element Is Visible    css:div.text-success+h1
-    ${successMessage}    Get Text    css:div.text-success+h1
-    Should Be Equal    ${successMessage}    Thank you for submitting your project
+    Input Career Objective           ${objective}
+    Click Element When Visible       ${nextScreenButton}
 
 Input Data Is Validated Correctly
-    Wait Until Element Is Not Visible    css:button#navButtonNext
-    Wait Until Element Is Visible    css:p.downloadSummaryPdf a.btn-outline-primary
-    
+    Page Is Navigated Correctly    Fill-out all forms
+    Wait Until Element Is Not Visible    ${nextScreenButton}
+    Wait Until Element Is Visible        ${downloadSummaryButton}
+
     Field Data Is Validated   ${firstNameDataPath}    ${firstName}
     Field Data Is Validated   ${lastNameDataPath}     ${lastName}
     Field Data Is Validated   ${extensionDataPath}    ${extension}
@@ -92,3 +83,11 @@ Input Data Is Validated Correctly
         ${actualTool}    Get Text    ${tool}
         Should Contain    ${toolsList}    ${actualTool}
     END
+
+New Application Is Successfully Submitted
+    Scroll Element Into View        ${validateAndSendButton}
+    Click Element                   ${validateAndSendButton}
+    Page Is Navigated Correctly     Summary
+    Wait Until Element Is Visible   ${successHeaderPath}
+    ${successMessage}    Get Text   ${successHeaderPath}
+    Should Be Equal      ${successMessage}    ${successHeaderText}
