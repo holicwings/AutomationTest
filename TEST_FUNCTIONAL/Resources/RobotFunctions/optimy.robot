@@ -3,7 +3,6 @@ Documentation   Common Keywords Used For Optimy
 ...             File Version 1.0
 Library         Collections
 Library         RPA.Browser.Selenium
-Resource        ../RobotLocators/commons.object.robot
 Resource        ../RobotLocators/optimy.object.robot
 
 *** Keywords ***

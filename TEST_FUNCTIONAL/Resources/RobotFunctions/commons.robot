@@ -1,6 +1,6 @@
 *** Settings ***
-Documentation   COMMON KEYWORDS USED FOR TF APPLIANCE
-...             File Version 2.0
+Documentation   Common Keywords For Automation Framework
+...             File Version 1.0
 Library         Collections
 Library         RPA.Browser.Selenium
 Library         Process
@@ -10,13 +10,10 @@ Library         RequestsLibrary
 Library         String
 Library         RPA.JSON
 Library         RPA.Desktop
-Resource        ../RobotLocators/commons.object.robot
 
 *** Variables ***
-${pipeline}        local
-${browser}         chrome
-${downloadFilePath}         ${EXECDIR}
-${uploadFilePath}           ${EXECDIR}
+${pipeline}            local
+${browser}             chrome
 
 *** Keywords ***
 Setup Environment and Open Browser
@@ -98,10 +95,3 @@ Set Chrome Options
     Call Method    ${chromeOptions}    add_argument    --timezone\="New_York"
     Call Method    ${chromeOptions}    add_argument    --geoLocation\="NY"
     [Return]  ${chromeOptions}
-
-Get Random Value From List Of WebElements
-    [Arguments]  ${listOfElements}
-    Wait Until Element Is Visible    ${listOfElements}
-    ${webElements}   Get WebElements    ${listOfElements}
-    ${randomElement}   Evaluate    random.choice($webElements)    random
-    [return]    ${randomElement}

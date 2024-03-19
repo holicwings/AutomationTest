@@ -1,3 +1,7 @@
+*** Settings ***
+Documentation   Common Objects Used For Optimy
+...             File Version 1.0
+
 *** Variables ***
 ###Login
 ${allowNecessaryCookiesOnlyButton}    css:button#cookie-allow-necessary-button

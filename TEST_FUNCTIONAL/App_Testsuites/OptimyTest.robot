@@ -4,7 +4,6 @@ Documentation      Sample Test Script For Optimy Site
 Resource           ../Resources/RobotFunctions/commons.robot
 Resource           ../Resources/RobotFunctions/optimy.robot
 Resource           ../Resources/RobotLocators/optimy.object.robot
-Resource           ../Resources/RobotFunctions/optimy.robot
 Test Teardown      Close All Browsers
 
 *** Variables ***
