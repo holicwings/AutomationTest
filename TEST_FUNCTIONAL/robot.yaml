@@ -1,0 +1,12 @@
+tasks:
+  Run all tasks:
+    shell: python -m robot --report NONE --outputdir output/smoketest --logtitle "smoketest" /Users/christianrobles/TF_ROBOT/robot-appliance/TF_APPLIANCE/App_Testsuites/Build_Verification_Testing/SmokeTestSuite.robot
+    
+condaConfigFile: conda.yaml
+artifactsDir: output
+PATH:
+  - .
+PYTHONPATH:
+  - .
+ignoreFiles:
+  - .gitignore
