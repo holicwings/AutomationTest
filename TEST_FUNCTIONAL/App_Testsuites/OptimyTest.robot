@@ -3,6 +3,7 @@ Documentation      Sample Test Script For Optimy Site
 ...                File Version 1.0
 Resource           ../Resources/RobotFunctions/commons.robot
 Resource           ../Resources/RobotFunctions/optimy.robot
+Resource           ../Resources/RobotLocators/optimy.object.robot
 Test Teardown      Close All Browsers
 
 *** Variables ***
@@ -25,11 +26,11 @@ ${filePath}         //TEST_FUNCTIONAL//Resources//TestData//${fileName}
 @{toolsList}        Java    Cucumber    Robot Framework
 
 *** Test Cases ***
-OptimyTest.TC01 - Verify If New Application Is Successfully Submited
+OptimyTest.TC01 - Verify If New Application Is Successfully Submitted
     GIVEN User Login To Application
     WHEN User Submits A New Application
     THEN Input Data Is Validated Correctly
-    AND New Application Is Successfully Submited
+    AND New Application Is Successfully Submitted
 
 *** Keywords ***
 User Login To Application
@@ -47,9 +48,7 @@ User Submits A New Application
     Input Field Data    Last name     ${lastName}
     Input Field Data    Extension     ${extension}
     Input Address    ${address}
-    Input Field Data    Select postal code     ${postalCode}
-    Wait Until Element Is Visible    css:ul.ui-menu a
-    Click Element    css:ul.ui-menu a
+    Select Postal Code    ${postalCode}
     Select From List By Label    css:select.locationCountry.custom-select    ${country}
     Upload Photo    ${filePath}
     Select Gender    ${gender}
@@ -65,7 +64,7 @@ User Submits A New Application
     Unselect Frame  
     Click Element When Visible    css:button#navButtonNext
 
-New Application Is Successfully Submited
+New Application Is Successfully Submitted
     Scroll Element Into View    css:div.d-none button#submitButton
     Click Element   css:div.d-none button#submitButton
 
@@ -77,20 +76,19 @@ Input Data Is Validated Correctly
     Wait Until Element Is Not Visible    css:button#navButtonNext
     Wait Until Element Is Visible    css:p.downloadSummaryPdf a.btn-outline-primary
     
-    Field Data Is Validated    css:div.question-text:nth-child(2) div.field    ${firstName}
-    Field Data Is Validated    css:div.question-text:nth-child(3) div.field    ${lastName}
-    Field Data Is Validated    css:div.question-text:nth-child(4) div.field    ${extension}
-    Field Data Is Validated    css:div.question-textarea div.answer.mb-3 p    ${address}
-    Field Data Is Validated    css:div.question-location div.answer.mb-3 p    ${postalCode}
-    Field Data Is Validated    css:div.question-locationCountry div.answer.mb-3 p    ${country}
-    Field Data Is Validated    css:div.question-upload div.answer.mb-3 a    ${fileName.lower()}
-    Field Data Is Validated    css:div.question-radio li    ${gender}
-    Field Data Is Validated    css:div.question-dropdown div.answers p    ${role}
-    Field Data Is Validated    css:div.question-richtext div.answers p    ${objective}
+    Field Data Is Validated   ${firstNameDataPath}    ${firstName}
+    Field Data Is Validated   ${lastNameDataPath}     ${lastName}
+    Field Data Is Validated   ${extensionDataPath}    ${extension}
+    Field Data Is Validated   ${addressDataPath}      ${address}
+    Field Data Is Validated   ${postalCodeDataPath}   ${postalCode}
+    Field Data Is Validated   ${countryDataPath}      ${country}
+    Field Data Is Validated   ${fileNameDataPath}     ${fileName.lower()}
+    Field Data Is Validated   ${genderDataPath}       ${gender}
+    Field Data Is Validated   ${roleDataPath}         ${role}
+    Field Data Is Validated   ${ojectiveDataPath}     ${objective}
     
-    ${tools}    Get WebElements    css:div.question-checkbox li
+    ${tools}    Get WebElements    ${toolsDataPath}
     FOR    ${tool}    IN    @{tools}
         ${actualTool}    Get Text    ${tool}
         Should Contain    ${toolsList}    ${actualTool}
     END
-

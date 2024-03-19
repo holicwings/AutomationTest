@@ -47,6 +47,12 @@ Select Gender
     Wait Until ELement is visible    css:label.custom-control[aria-label\="${gender}"]
     Click Element    css:label.custom-control[aria-label\="${gender}"]
 
+Select Postal Code
+    [Arguments]    ${postalCode}
+    Input Field Data    Select postal code     ${postalCode}
+    Wait Until Element Is Visible    css:ul.ui-menu a
+    Click Element    css:ul.ui-menu a
+
 Field Data Is Validated
     [Arguments]    ${objectPath}    ${actualResult}
     ${actualText}    Get Text   ${objectPath}
